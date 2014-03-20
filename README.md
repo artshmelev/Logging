@@ -1,0 +1,4 @@
+Logging
+=======
+
+Class for logging
