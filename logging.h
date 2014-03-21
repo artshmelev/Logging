@@ -1,6 +1,8 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+#include "buffer.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -27,6 +29,7 @@ private:
   
   const std::string getDateTime() const;
   static std::string pathToFile;
+  static Buffer buffer;
 };
 
 #endif // LOGGING_H

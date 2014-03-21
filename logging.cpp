@@ -3,6 +3,7 @@
 #include <ctime>
 
 std::string Logging::pathToFile = "";
+Buffer Logging::buffer;
 
 void Logging::config(const std::string& path, int level) const {
   pathToFile = path;
@@ -18,10 +19,12 @@ void Logging::logDebug(const std::string& message) const {
 
 void Logging::logInfo(const std::string& message) const {
   std::cout << "INFO     [" << getDateTime() << "] " << message << std::endl;
+  buffer.add("INFO     [" + getDateTime() + "] " + message);
   std::ofstream outputFile;
   outputFile.open(pathToFile);
   outputFile << "INFO     [" << getDateTime() << "] " << message << std::endl;
   outputFile.close();
+  buffer.writeToFile("ffs");
 }
 
 void Logging::logWarning(const std::string& message) const {
@@ -36,7 +39,6 @@ void Logging::logCritical(const std::string& message) const {
   std::cout << "CRITICAL [" << getDateTime() << "] " << message << std::endl;
 }
 
-//TODO: string&
 const std::string Logging::getDateTime() const {
   time_t now = time(0);
   struct tm tstruct;
