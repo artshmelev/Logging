@@ -3,8 +3,6 @@
 
 #include "buffer.h"
 
-#include <iostream>
-#include <fstream>
 #include <string>
 
 class Logging {
@@ -15,7 +13,6 @@ public:
   }
   
   void config(const std::string& path, int level) const;
-  void print(const std::string& message) const;
   void logDebug(const std::string& message) const;
   void logInfo(const std::string& message) const;
   void logWarning(const std::string& message) const;
@@ -28,7 +25,6 @@ private:
   Logging& operator=(const Logging&);
   
   const std::string getDateTime() const;
-  static std::string pathToFile;
   static Buffer buffer;
 };
 

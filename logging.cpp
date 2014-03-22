@@ -2,41 +2,30 @@
 
 #include <ctime>
 
-std::string Logging::pathToFile = "";
 Buffer Logging::buffer;
 
 void Logging::config(const std::string& path, int level) const {
-  pathToFile = path;
-}
-
-void Logging::print(const std::string& message) const {
-  std::cout << message << std::endl;
+  buffer.setPath(path);
 }
 
 void Logging::logDebug(const std::string& message) const {
-  std::cout << "DEBUG    [" << getDateTime() << "] " << message << std::endl;
+  buffer.add("DEBUG    [" + getDateTime() + "] " + message);
 }
 
 void Logging::logInfo(const std::string& message) const {
-  std::cout << "INFO     [" << getDateTime() << "] " << message << std::endl;
   buffer.add("INFO     [" + getDateTime() + "] " + message);
-  std::ofstream outputFile;
-  outputFile.open(pathToFile);
-  outputFile << "INFO     [" << getDateTime() << "] " << message << std::endl;
-  outputFile.close();
-  buffer.writeToFile("ffs");
 }
 
 void Logging::logWarning(const std::string& message) const {
-  std::cout << "WARNING  [" << getDateTime() << "] " << message << std::endl;
+  buffer.add("WARNING  [" + getDateTime() + "] " + message);
 }
 
 void Logging::logError(const std::string& message) const {
-  std::cout << "ERROR    [" << getDateTime() << "] " << message << std::endl;
+  buffer.add("ERROR    [" + getDateTime() + "] " + message);
 }
 
 void Logging::logCritical(const std::string& message) const {
-  std::cout << "CRITICAL [" << getDateTime() << "] " << message << std::endl;
+  buffer.add("CRITICAL [" + getDateTime() + "] " + message);
 }
 
 const std::string Logging::getDateTime() const {
