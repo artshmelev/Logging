@@ -14,6 +14,7 @@ Buffer::~Buffer() {
 
 void Buffer::add(const std::string& str) {
   int len = str.length();
+  mutex.lock();
   if (index + len >= kBufSize) {
     writeToFile();
     memset(data, '\0', kBufSize);
@@ -22,6 +23,7 @@ void Buffer::add(const std::string& str) {
   str.copy(data + index, len, 0);
   index += len;
   data[index++] = '\n';
+  mutex.unlock();
 }
 
 void Buffer::setPath(const std::string& path) {
