@@ -1,5 +1,5 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef BUFFER_H_
+#define BUFFER_H_
 
 #include <string>
 #include <mutex>
@@ -8,16 +8,16 @@ class Buffer {
 public:
   Buffer();
   ~Buffer();
-  void add(const std::string& str);
-  void setPath(const std::string& path);
+  void Add(const std::string& str);
+  void set_path(const std::string& path);
   
 private:
-  void writeToFile();
+  void WriteToFile();
   static const int kBufSize = 4096;
-  char data[kBufSize];
-  int index;
-  std::string pathToFile;
-  std::mutex mutex;
+  char data_[kBufSize];
+  int index_;
+  std::string path_to_file_;
+  std::mutex mutex_;
 };
 
-#endif // BUFFER_H
+#endif // BUFFER_H_

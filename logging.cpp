@@ -1,34 +1,46 @@
+#include <ctime>
+#include <future>
+
 #include "logging.h"
 
-#include <ctime>
+Buffer Logging::buffer_;
+int Logging::level_ = Logging::kDebug;
 
-Buffer Logging::buffer;
-
-void Logging::config(const std::string& path, int level) const {
-  buffer.setPath(path);
+void Logging::Config(const std::string& path, int log_level) const {
+  buffer_.set_path(path);
+  level_ = log_level;
 }
 
-void Logging::logDebug(const std::string& message) const {
-  buffer.add("DEBUG    [" + getDateTime() + "] " + message);
+void Logging::LogDebug(const std::string& message) const {
+  if (level_ <= kDebug)
+    std::async(std::launch::async, &Buffer::Add, &buffer_,
+               "DEBUG    [" + GetDateTime() + "] " + message);
 }
 
-void Logging::logInfo(const std::string& message) const {
-  buffer.add("INFO     [" + getDateTime() + "] " + message);
+void Logging::LogInfo(const std::string& message) const {
+  if (level_ <= kInfo)
+    std::async(std::launch::async, &Buffer::Add, &buffer_,
+               "INFO     [" + GetDateTime() + "] " + message);
 }
 
-void Logging::logWarning(const std::string& message) const {
-  buffer.add("WARNING  [" + getDateTime() + "] " + message);
+void Logging::LogWarning(const std::string& message) const {
+  if (level_ <= kWarning)
+    std::async(std::launch::async, &Buffer::Add, &buffer_,
+               "WARNING  [" + GetDateTime() + "] " + message);
 }
 
-void Logging::logError(const std::string& message) const {
-  buffer.add("ERROR    [" + getDateTime() + "] " + message);
+void Logging::LogError(const std::string& message) const {
+  if (level_ <= kError)
+    std::async(std::launch::async, &Buffer::Add, &buffer_,
+               "ERROR    [" + GetDateTime() + "] " + message);
 }
 
-void Logging::logCritical(const std::string& message) const {
-  buffer.add("CRITICAL [" + getDateTime() + "] " + message);
+void Logging::LogCritical(const std::string& message) const {
+  std::async(std::launch::async, &Buffer::Add, &buffer_,
+             "CRITICAL [" + GetDateTime() + "] " + message);
 }
 
-const std::string Logging::getDateTime() const {
+const std::string Logging::GetDateTime() const {
   time_t now = time(0);
   struct tm tstruct;
   char buf[80];

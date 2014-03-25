@@ -1,38 +1,38 @@
+#include <cstring>
+#include <fstream>
+
 #include "buffer.h"
 
-#include <fstream>
-#include <cstring>
-
 Buffer::Buffer() {
-  index = 0;
-  memset(data, '\0', kBufSize);
+  index_ = 0;
+  memset(data_, '\0', kBufSize);
 }
 
 Buffer::~Buffer() {
-  writeToFile();  
+  WriteToFile();  
 }
 
-void Buffer::add(const std::string& str) {
+void Buffer::Add(const std::string& str) {
   int len = str.length();
-  mutex.lock();
-  if (index + len >= kBufSize) {
-    writeToFile();
-    memset(data, '\0', kBufSize);
-    index = 0;
+  mutex_.lock();
+  if (index_ + len >= kBufSize) {
+    WriteToFile();
+    memset(data_, '\0', kBufSize);
+    index_ = 0;
   }
-  str.copy(data + index, len, 0);
-  index += len;
-  data[index++] = '\n';
-  mutex.unlock();
+  str.copy(data_ + index_, len, 0);
+  index_ += len;
+  data_[index_++] = '\n';
+  mutex_.unlock();
 }
 
-void Buffer::setPath(const std::string& path) {
-  pathToFile = path;
+void Buffer::set_path(const std::string& path) {
+  path_to_file_ = path;
 }
 
-void Buffer::writeToFile() {
-  std::ofstream out(pathToFile, std::ios_base::app);
-  out.write(data, index);
+void Buffer::WriteToFile() {
+  std::ofstream out(path_to_file_, std::ios_base::app);
+  out.write(data_, index_);
   out.close();
 }
 
