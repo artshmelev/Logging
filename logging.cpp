@@ -13,31 +13,31 @@ void Logging::Config(const std::string& path, int log_level) const {
 
 void Logging::LogDebug(const std::string& message) const {
   if (level_ <= kDebug)
-    std::async(std::launch::async, &Buffer::Add, &buffer_,
-               "DEBUG    [" + GetDateTime() + "] " + message);
+    auto fut = std::async(std::launch::async, &Buffer::Add, &buffer_,
+                          "DEBUG    [" + GetDateTime() + "] " + message);
 }
 
 void Logging::LogInfo(const std::string& message) const {
   if (level_ <= kInfo)
-    std::async(std::launch::async, &Buffer::Add, &buffer_,
-               "INFO     [" + GetDateTime() + "] " + message);
+    auto fut = std::async(std::launch::async, &Buffer::Add, &buffer_,
+                          "INFO     [" + GetDateTime() + "] " + message);
 }
 
 void Logging::LogWarning(const std::string& message) const {
   if (level_ <= kWarning)
-    std::async(std::launch::async, &Buffer::Add, &buffer_,
-               "WARNING  [" + GetDateTime() + "] " + message);
+    auto fut = std::async(std::launch::async, &Buffer::Add, &buffer_,
+                          "WARNING  [" + GetDateTime() + "] " + message);
 }
 
 void Logging::LogError(const std::string& message) const {
   if (level_ <= kError)
-    std::async(std::launch::async, &Buffer::Add, &buffer_,
-               "ERROR    [" + GetDateTime() + "] " + message);
+    auto fut = std::async(std::launch::async, &Buffer::Add, &buffer_,
+                          "ERROR    [" + GetDateTime() + "] " + message);
 }
 
 void Logging::LogCritical(const std::string& message) const {
-  std::async(std::launch::async, &Buffer::Add, &buffer_,
-             "CRITICAL [" + GetDateTime() + "] " + message);
+  auto fut = std::async(std::launch::async, &Buffer::Add, &buffer_,
+                        "CRITICAL [" + GetDateTime() + "] " + message);
 }
 
 const std::string Logging::GetDateTime() const {

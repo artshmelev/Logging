@@ -12,7 +12,7 @@ public:
     return single_instance;
   }
   
-  void Config(const std::string& path, int level) const;
+  void Config(const std::string& path, int log_level) const;
   void LogDebug(const std::string& message) const;
   void LogInfo(const std::string& message) const;
   void LogWarning(const std::string& message) const;
