@@ -1,8 +1,13 @@
 CC=g++
 CFLAGS=-std=c++11 -pthread
+MKDIR_P=mkdir -p bin
 
-all:
-	$(CC) $(CFLAGS) main.cpp logging.cpp logging.h buffer.cpp buffer.h -o main
+all: dirs
+	$(CC) $(CFLAGS) -Iinclude examples/example1.cpp src/*.cpp include/*.h \
+										-o bin/example1
+
+dirs:
+	$(MKDIR_P)
 
 clean:
-	rm -f main
+	rm -rf bin
