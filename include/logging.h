@@ -1,33 +1,35 @@
 #ifndef LOGGING_H_
 #define LOGGING_H_
 
-#include <string>
+namespace logging
+{
 
-#include "buffer.h"
-
-class Logging {
-public:
-  static const Logging& Instance() {
-    static Logging single_instance;
-    return single_instance;
-  }
-  
-  void Config(const std::string& path, int log_level) const;
-  void LogDebug(const std::string& message) const;
-  void LogInfo(const std::string& message) const;
-  void LogWarning(const std::string& message) const;
-  void LogError(const std::string& message) const;
-  void LogCritical(const std::string& message) const;
-  enum {kDebug = 0, kInfo, kWarning, kError, kCritical};
-
-private:
-  Logging() {};
-  Logging(const Logging&);
-  Logging& operator=(const Logging&);
-  
-  const std::string GetDateTime() const;
-  static Buffer buffer_;
-  static int level_;
+enum Level
+{
+    kDebug = 0,
+    kInfo,
+    kWarn,
+    kError,
+    kCrit
 };
+
+struct Config
+{
+    Config(const std::string& aPath, Level aLevel)
+        : m_Path(aPath)
+        , m_Level(aLevel) {}
+
+    std::string m_Path;
+    Level       m_Level;
+};
+
+void setConfig(const std::string& aPath, Level aLevel);
+void debug(const std::string& aMsg);
+void info(const std::string& aMsg);
+void warn(const std::string& aMsg);
+void error(const std::string& aMsg);
+void crit(const std::string& aMsg);
+
+} // namespace logging
 
 #endif // LOGGING_H_

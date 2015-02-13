@@ -1,35 +1,41 @@
 #include <iostream>
 #include <thread>
+#include <vector>
 
 #include "logging.h"
 
-void Func(int id) {
-  for (int i = 0; i < 10; ++i)
-    Logging::Instance().LogInfo("I am thread " + std::to_string(id));
+void func(int id)
+{
+    for (int i = 0; i < 30; ++i)
+        logging::info("I am thread " + std::to_string(id));
 }
 
-int main() {
-  Logging::Instance().Config("log.txt", Logging::kDebug);
-  int p = 45;
-  double d = 4.0;
-  Logging::Instance().LogInfo("Starting logging");
-  Logging::Instance().LogError("Test ERROR message");
-  Logging::Instance().LogCritical("Test CRITICAL message");
-  Logging::Instance().LogWarning("p = " + std::to_string(p));
-  Logging::Instance().LogInfo("d = " + std::to_string(d));
+int main()
+{
+    logging::setConfig("log.txt", logging::kDebug);
 
-  for (int i = 0; i < 513; ++i) {
-    Logging::Instance().LogDebug("1234567");
-  }
+    int p = 45;
+    double d = 4.0;
+    logging::info("Starting logging");
+    logging::error("Test ERROR message");
+    logging::crit("Test CRITICAL message");
+    logging::warn("p = " + std::to_string(p));
+    logging::info("d = " + std::to_string(d));
 
-  std::thread thread1(Func, 1);
-  std::thread thread2(Func, 2);
+    for (int i = 0; i < 20; ++i)
+        logging::debug("1234567");
 
-  thread1.join();
-  thread2.join();
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 3; ++i)
+        threads.push_back(std::thread(func, i));
 
-  Logging::Instance().LogInfo("Finishing logging");
+    logging::info("Main thread info");
 
-  return 0;
+    for (auto& t: threads)
+        t.join();
+
+    logging::info("Finishing logging");
+
+    return 0;
 }
 
