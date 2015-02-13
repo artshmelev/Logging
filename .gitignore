@@ -12,4 +12,5 @@
 *.la
 *.a
 
-bin/*
+build/
+CMakeLists.txt.user
